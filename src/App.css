@@ -13,9 +13,22 @@ header {
 
 header h1 {
   font-size: 28px;
-  cursor: pointer;
   margin: 0;
   letter-spacing: -0.5px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.header-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 /* Search Form */
@@ -426,5 +439,36 @@ header h1 {
   padding: 8px;
   font-size: 0.78rem;
   cursor: pointer;
+  font-weight: 500;
+}
+
+/* Major Page */
+.major-page {
+  margin-top: 20px;
+}
+
+.major-dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 20px 24px;
+  background: var(--card-bg, #1a1a1a);
+  border: 1px solid var(--border, #333);
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.major-dashboard-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.major-subtitle {
+  margin: 0 0 24px 4px;
+  font-size: 16px;
+  color: var(--text-muted, #888);
   font-weight: 500;
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+import logo from './StartUpClub Logo.png'
 
 const MAJORS = [
   { label: 'Computer Science', query: 'computer science programming textbook' },
@@ -12,7 +13,7 @@ const MAJORS = [
   { label: 'Psychology', query: 'introduction psychology textbook cognitive' },
 ]
 
-function BookRow({ major, onBookClick, rowRef, expanded, onToggleExpand }) {
+function BookRow({ major, onBookClick, rowRef, onSeeAll }) {
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -36,7 +37,7 @@ function BookRow({ major, onBookClick, rowRef, expanded, onToggleExpand }) {
   const getCoverUrl = (coverId) =>
     coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null
 
-  const displayedBooks = expanded ? books : books.slice(0, 5)
+  const displayedBooks = books.slice(0, 5)
 
   if (!loading && books.length === 0) return null
 
@@ -45,15 +46,15 @@ function BookRow({ major, onBookClick, rowRef, expanded, onToggleExpand }) {
       <div className="row-header">
         <h3 className="row-title">{major.label}</h3>
         {books.length > 5 && (
-          <button className="expand-btn" onClick={onToggleExpand}>
-            {expanded ? 'Show Less' : 'See All'}
+          <button className="expand-btn" onClick={() => onSeeAll(major)}>
+            See All
           </button>
         )}
       </div>
       {loading ? (
         <p className="status">Loading...</p>
       ) : (
-        <div className={`row-grid ${expanded ? 'row-grid-expanded' : ''}`}>
+        <div className="row-grid">
           {displayedBooks.map(book => (
             <div key={book.key} className="shelf-card" onClick={() => onBookClick(book)}>
               <div className="shelf-cover">
@@ -73,6 +74,72 @@ function BookRow({ major, onBookClick, rowRef, expanded, onToggleExpand }) {
   )
 }
 
+function MajorPage({ major, onBookClick, onBack }) {
+  const [books, setBooks] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch(
+          `https://openlibrary.org/search.json?q=${encodeURIComponent(major.query)}&limit=100`
+        )
+        const data = await res.json()
+        const withCovers = (data.docs || []).filter(b => b.cover_i)
+        setBooks(withCovers)
+      } catch {
+        setBooks([])
+      }
+      setLoading(false)
+    }
+    fetchBooks()
+  }, [major.query])
+
+  const getCoverUrl = (coverId) =>
+    coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null
+
+  return (
+    <div className="major-page">
+      <div className="major-dashboard">
+        <h2 className="major-dashboard-title">{major.label}</h2>
+        <button className="back-btn" onClick={onBack}>
+          ← Back
+        </button>
+      </div>
+      <p className="major-subtitle">Full Library</p>
+      {loading ? (
+        <p className="status">Loading full library...</p>
+      ) : books.length === 0 ? (
+        <p className="status">No books found.</p>
+      ) : (
+        <div className="results-grid">
+          {books.map(book => (
+            <div key={book.key} className="book-card" onClick={() => onBookClick(book)}>
+              <div className="card-cover">
+                {getCoverUrl(book.cover_i) ? (
+                  <img src={getCoverUrl(book.cover_i)} alt={book.title} />
+                ) : (
+                  <div className="no-cover">No Cover</div>
+                )}
+              </div>
+              <div className="card-info">
+                <h3>{book.title}</h3>
+                <p className="author">
+                  {book.author_name?.slice(0, 2).join(', ') || 'Unknown'}
+                </p>
+                {book.first_publish_year && (
+                  <p className="year">{book.first_publish_year}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function App() {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
@@ -82,11 +149,11 @@ function App() {
   const [sortOrder, setSortOrder] = useState('none')
   const [subjectFilter, setSubjectFilter] = useState('')
   const [recentlyViewed, setRecentlyViewed] = useState([])
-  const [expandedRow, setExpandedRow] = useState(null)
   const [hoveredRecent, setHoveredRecent] = useState(null)
   const [description, setDescription] = useState('')
   const [downloadUrl, setDownloadUrl] = useState(null)
   const [pdfLoading, setPdfLoading] = useState(false)
+  const [selectedMajor, setSelectedMajor] = useState(null)
 
   const rowRefs = useRef({})
 
@@ -195,13 +262,34 @@ function App() {
     displayedResults.sort((a, b) => (a.first_publish_year || 0) - (b.first_publish_year || 0))
   }
 
+  if (selectedMajor && !selectedBook) {
+    return (
+      <div className="app">
+        <header>
+          <div className="header-brand" onClick={() => { setSelectedMajor(null); setSearched(false); setResults([]) }}>
+            <img src={logo} alt="Logo" className="header-logo" />
+            <h1>TextbookFinder</h1>
+          </div>
+        </header>
+        <main>
+          <MajorPage
+            major={selectedMajor}
+            onBookClick={openBook}
+            onBack={() => setSelectedMajor(null)}
+          />
+        </main>
+      </div>
+    )
+  }
+
   if (selectedBook) {
     return (
       <div className="app">
         <header>
-          <h1 onClick={() => { setSelectedBook(null); setSearched(false); setResults([]) }}>
-            TextbookFinder
-          </h1>
+          <div className="header-brand" onClick={() => { setSelectedBook(null); setSearched(false); setResults([]) }}>
+            <img src={logo} alt="Logo" className="header-logo" />
+            <h1>TextbookFinder</h1>
+          </div>
         </header>
         <main className="book-detail">
           <button className="back-btn" onClick={() => setSelectedBook(null)}>
@@ -277,9 +365,10 @@ function App() {
   return (
     <div className="app">
       <header>
-        <h1 onClick={() => { setSearched(false); setResults([]) }}>
-          TextbookFinder
-        </h1>
+        <div className="header-brand" onClick={() => { setSearched(false); setResults([]) }}>
+          <img src={logo} alt="Logo" className="header-logo" />
+          <h1>TextbookFinder</h1>
+        </div>
       </header>
 
       <main>
@@ -359,8 +448,7 @@ function App() {
                 major={major}
                 onBookClick={openBook}
                 rowRef={el => rowRefs.current[major.label] = el}
-                expanded={expandedRow === major.label}
-                onToggleExpand={() => setExpandedRow(expandedRow === major.label ? null : major.label)}
+                onSeeAll={(m) => setSelectedMajor(m)}
               />
             ))}
           </>
