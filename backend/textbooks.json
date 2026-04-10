@@ -1,17 +1,112 @@
 [
   {
+    "id": 1,
     "title": "Calculus Volume 1",
     "author": "OpenStax",
-    "subject": "Mathematics"
+    "subject": "Mathematics",
+    "year": 2016,
+    "description": "Calculus Volume 1 covers functions, limits, derivatives, and integration. Designed for a two- or three-semester calculus course appropriate for students majoring in mathematics, science, or engineering.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10521653-L.jpg",
+    "ia": "calculus-volume-1-openstax",
+    "hasPdf": true
   },
   {
-    "title": "Biology 2e", 
+    "id": 2,
+    "title": "Biology 2e",
     "author": "OpenStax",
-    "subject": "Biology"
+    "subject": "Biology",
+    "year": 2018,
+    "description": "Biology 2e covers the scope and sequence of a typical two-semester biology course. Provides comprehensive coverage of foundational research and core biology concepts through an evolutionary lens.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10776421-L.jpg",
+    "ia": "biology-2e-openstax",
+    "hasPdf": true
   },
   {
+    "id": 3,
     "title": "Algebra and Trigonometry",
     "author": "OpenStax",
-    "subject": "Mathematics"
+    "subject": "Mathematics",
+    "year": 2015,
+    "description": "A comprehensive exploration of algebraic principles meeting scope and sequence requirements for a typical introductory algebra and trigonometry course.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/8739161-L.jpg",
+    "ia": "algebra-trigonometry-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 4,
+    "title": "Introduction to Psychology",
+    "author": "OpenStax",
+    "subject": "Psychology",
+    "year": 2014,
+    "description": "A comprehensive survey of the scientific study of human behavior and mental processes, covering sensation, perception, states of consciousness, motivation, developmental psychology, and more.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10521654-L.jpg",
+    "ia": "introduction-to-psychology-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 5,
+    "title": "Principles of Economics 2e",
+    "author": "OpenStax",
+    "subject": "Economics",
+    "year": 2017,
+    "description": "Covers the scope and sequence of most introductory economics courses including microeconomics, macroeconomics, supply and demand, and international trade with current real-world examples.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10521655-L.jpg",
+    "ia": "principles-of-economics-2e-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 6,
+    "title": "Chemistry 2e",
+    "author": "OpenStax",
+    "subject": "Chemistry",
+    "year": 2019,
+    "description": "Meets the scope and sequence of a two-semester general chemistry course. Covers core chemistry concepts and how they apply to everyday life and future scientific study.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10776422-L.jpg",
+    "ia": "chemistry-2e-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 7,
+    "title": "University Physics Volume 1",
+    "author": "OpenStax",
+    "subject": "Physics",
+    "year": 2016,
+    "description": "Covers mechanics, sound, oscillations, and waves. Designed for the calculus-based physics course appropriate for students majoring in physics, engineering, or related fields.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10521656-L.jpg",
+    "ia": "university-physics-volume-1-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 8,
+    "title": "Introduction to Sociology 3e",
+    "author": "OpenStax",
+    "subject": "Sociology",
+    "year": 2021,
+    "description": "Aligns with a typical introductory sociology course, providing a rigorous introduction to sociology's theory and application with updated examples and research.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10776423-L.jpg",
+    "ia": "introduction-to-sociology-3e-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 9,
+    "title": "Statistics",
+    "author": "OpenStax",
+    "subject": "Mathematics",
+    "year": 2013,
+    "description": "Designed for introductory statistics courses across a wide variety of majors. Emphasizes real-world applications and statistical literacy over pure mathematical derivation.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10521657-L.jpg",
+    "ia": "introductory-statistics-openstax",
+    "hasPdf": true
+  },
+  {
+    "id": 10,
+    "title": "Computer Science: An Interdisciplinary Approach",
+    "author": "Robert Sedgewick and Kevin Wayne",
+    "subject": "Computer Science",
+    "year": 2016,
+    "description": "A modern introduction to computer science emphasizing the relationship between programming and its mathematical and scientific foundations. Covers Java, algorithms, and data structures.",
+    "coverUrl": "https://covers.openlibrary.org/b/id/8224547-L.jpg",
+    "ia": "",
+    "hasPdf": false
   }
 ]
