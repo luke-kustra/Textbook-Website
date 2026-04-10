@@ -84,6 +84,9 @@ function App() {
   const [recentlyViewed, setRecentlyViewed] = useState([])
   const [expandedRow, setExpandedRow] = useState(null)
   const [hoveredRecent, setHoveredRecent] = useState(null)
+  const [description, setDescription] = useState('')
+  const [downloadUrl, setDownloadUrl] = useState(null)
+  const [pdfLoading, setPdfLoading] = useState(false)
 
   const rowRefs = useRef({})
 
@@ -91,6 +94,31 @@ function App() {
     const stored = localStorage.getItem('recentlyViewed')
     if (stored) setRecentlyViewed(JSON.parse(stored))
   }, [])
+
+  useEffect(() => {
+    if (!selectedBook) return;
+
+    setDescription("");
+    setDownloadUrl(null);
+    setPdfLoading(false);
+
+    fetch(`https://openlibrary.org${selectedBook.key}.json`)
+      .then((res) => res.json())
+      .then((data) => {
+        const desc = data.description;
+        setDescription(typeof desc === "string" ? desc : desc?.value || "");
+      })
+      .catch(() => {});
+
+    if (selectedBook.ia?.length > 0) {
+      setPdfLoading(true);
+      fetch(`http://localhost:5000/api/download?ia=${selectedBook.ia[0]}`)
+        .then((res) => res.json())
+        .then((data) => setDownloadUrl(data.downloadUrl ?? null))
+        .catch(() => setDownloadUrl(null))
+        .finally(() => setPdfLoading(false));
+    }
+  }, [selectedBook]);
 
   const addToRecentlyViewed = (book) => {
     setRecentlyViewed(prev => {
@@ -210,6 +238,26 @@ function App() {
               )}
               {selectedBook.isbn && (
                 <p className="meta">ISBN: {selectedBook.isbn[0]}</p>
+              )}
+              {description && (
+                <p className="meta description">{description}</p>
+              )}
+              {pdfLoading && (
+                <p className="meta">Checking PDF availability...</p>
+              )}
+              {!pdfLoading && selectedBook.ia?.length > 0 && (
+                downloadUrl ? (
+                  <a
+                    className="download-btn"
+                    href={downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Download PDF
+                  </a>
+                ) : (
+                  <p className="meta">No PDF available</p>
+                )
               )}
               <a
                 className="open-library-link"
